@@ -1,0 +1,8 @@
+node_modules/
+.claude/settings.local.json
+
+# 書き出し物（必要ならデッキごとにコミットする）
+slides.html
+slides.pptx
+links.json
+preview/
