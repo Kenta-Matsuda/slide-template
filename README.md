@@ -21,6 +21,9 @@ Marp で発表資料（PPTX）を作るためのテンプレートです。テ�
    npm run build    # slides.pptx と slides.html を書き出し、PPTX のリンクを押せるようにする
    npm run images   # preview/ に各スライドの PNG を書き出す（見た目の確認用）
    npm run watch    # 編集しながら slides.html を更新し続ける
+   npm run diagrams # assets/diagrams/*.html の図を PNG に書き出す
+   npm run shots    # shots.config.cjs に書いた画面を撮り、枠と吹き出しを付けて assets/web/ に書き出す
+   npm run icons -- AmazonBedrock AWSLambda   # AWS の公式アイコンを assets/icons/ にコピーする（--find で名前を探す）
    ```
 
 Claude Code で作るときは `CLAUDE.md` に作り方のルールがあります。
@@ -30,16 +33,23 @@ Claude Code で作るときは `CLAUDE.md` に作り方のルールがありま�
 | ファイル | 内容 |
 |---|---|
 | `theme.css` | テーマ `talk2026` |
-| `slides.md` | 部品の見本（14枚） |
+| `slides.md` | 部品の見本（18枚） |
 | `tools/measure-links.cjs` | `slides.html` のリンクの位置を測って `links.json` に書き出す |
 | `tools/add-pptx-links.py` | PPTX のその位置に透明なリンク領域を重ねる |
 | `assets/` | 画像を置く場所 |
+| `assets/diagrams/` | 図の元（HTML）と書き出した PNG。`diagram.css` が図の共通の見た目、`wires.js` が矢印。`sample-arch.html` が構成図の見本 |
+| `assets/icons/` | AWS の公式アイコン（npm パッケージ `aws-icons` の SVG）。`npm run icons` で足す |
+| `assets/web/` | Web 画面のキャプチャ。`sample-page.html` は `npm run shots` の見本用のページ |
+| `shots.config.cjs` | `npm run shots` で撮る画面の設定（URL、撮る範囲、枠と吹き出しを付ける要素） |
+| `tools/render-diagrams.cjs` | 図の HTML の `#fig` を PNG（2倍）に書き出す。`body` に `data-transparent="1"` で背景を透明にする |
+| `tools/shoot.cjs` | Web 画面を撮り、番号つきの枠と吹き出しを付ける。吹き出しは右の余白に重ならないように並ぶ |
+| `tools/icons.cjs` | AWS の公式アイコンを探して `assets/icons/` にコピーする |
 
 Marp の PPTX は各スライドが画像になるため、そのままではリンクを押せません。`npm run build` の最後の `npm run links` がこれを補います。
 
 ## ブラウザ
 
-Marp CLI は Chrome でスライドを描画します。`package.json` は `C:/Program Files/Google/Chrome/Application/chrome.exe` を前提にしています。別の場所にあるときは、`package.json` の `--browser-path` と `links` の引数を書き換えてください。
+Marp CLI は Chrome でスライドを描画します。図の書き出し（`diagrams`）と画面の撮影（`shots`）も同じ Chrome を使います。`package.json` は `C:/Program Files/Google/Chrome/Application/chrome.exe` を前提にしています。別の場所にあるときは、`package.json` の `--browser-path` と、`links`・`diagrams`・`shots` の引数を書き換えてください。
 
 ## 構成の決まりごと
 
@@ -101,6 +111,12 @@ Marp CLI は Chrome でスライドを描画します。`package.json` は `C:/P
 | `.beta` / `.pill` | 告知の帯・小さなタグ |
 | `.media` | 動画などの置き場所 |
 | `.fill`（`.fill-lg`） | 未記入の箇所（点線枠） |
+| `img.frame` / `img.wide` | キャプチャ（枠付き）・図を横いっぱいに置く |
+| `.navpills` | 見出しの下の道しるべ。並列の選択肢を `.pill` で並べ、いま話している側を `.hot` にする |
+| `.callout-up` | 上の行を指す吹き出し。一覧の中で、あとで扱う項目を示す |
+| `.sw` | 凡例の色見本。色は `style="background:…"` で図に合わせる |
+| `.qpair` > `.c`（`.q`）/ `.a` | 扉で「A → B？」の問いを2つの箱で示す（黒地用） |
+| `list`（`_class`） | リンクの多い一覧の表を詰めて載せる |
 
 ## 発表者ノート
 

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<!-- 構成図の見本。npm run diagrams で sample-arch.png に書き出す。
+     ノードは .node（アイコン＋名前）、枠は .group、矢印は wire('#a', '#b', {...}) で引く -->
+<link rel="stylesheet" href="diagram.css">
+<script src="wires.js"></script>
+<style>
+  #fig { width: 1000px; height: 380px; }
+</style>
+</head><body>
+<div id="fig">
+  <svg id="wires"></svg>
+
+  <div class="node" id="users" style="left:0;top:100px"><img src="../icons/Users.svg"><div class="t">利用者</div></div>
+
+  <div class="group cloud" style="left:170px;top:8px;width:830px;height:370px">
+    <div class="gl"><img src="../icons/AWSCloudlogo.svg">AWS Cloud</div>
+  </div>
+
+  <div class="node" id="apigw" style="left:200px;top:100px"><img src="../icons/AmazonAPIGateway.svg"><div class="t">API Gateway</div><div class="s">入口</div></div>
+  <div class="node" id="lambda" style="left:400px;top:100px"><img src="../icons/AWSLambda.svg"><div class="t">Lambda</div><div class="s">処理の本体</div></div>
+  <div class="node hot" id="bedrock" style="left:620px;top:100px"><img src="../icons/AmazonBedrock.svg"><div class="t">Bedrock</div><div class="s">生成 AI</div></div>
+  <div class="node" id="ddb" style="left:400px;top:250px"><img src="../icons/AmazonDynamoDB.svg"><div class="t">DynamoDB</div><div class="s">会話の状態</div></div>
+  <div class="box hot" id="out" style="left:820px;top:104px;width:150px;height:48px">回答</div>
+</div>
+<script>
+window.addEventListener('load', async () => { await document.fonts.ready;
+  wire('#users', '#apigw');
+  wire('#apigw', '#lambda');
+  wire('#lambda', '#bedrock', {both: true});
+  wire('#lambda', '#ddb', {from: 'b', to: 't', both: true});
+  wire('#bedrock', '#out', {hot: true});
+  document.body.dataset.ready = '1';
+});
+</script>
+</body></html>

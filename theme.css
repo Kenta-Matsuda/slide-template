@@ -778,3 +778,37 @@ section.why .link { margin: 8px 0 0; }
   background: var(--hot); color: #fff; padding: 6px 12px;
 }
 .beta a { color: var(--hot); font-family: var(--font-mono); font-size: 18px; text-decoration: underline; }
+
+/* =========================================================
+   v7: 画像・図・一覧（「AWS×教育の公式リソース100連発」2026-10-16 で追加）
+   ========================================================= */
+
+/* 画面のキャプチャや図を枠付きで横いっぱいに置く */
+img.frame { width: 100%; display: block; border: 2px solid var(--ink); }
+img.wide  { width: 100%; display: block; }
+
+/* 見出しの下の道しるべ。いま話している側を .hot にする（並列の選択肢を並べる） */
+.navpills { font-size: 18px; color: var(--grey); margin: -6px 0 12px; }
+.navpills .pill { font-size: 16px; }
+
+/* 上の行を指す吹き出し（一覧の中で、あとで扱う項目を示す） */
+.callout-up { position: relative; display: inline-block; margin: 2px 0 6px 40px; background: var(--hot); color: #fff;
+  font-weight: 700; font-size: 20px; padding: 8px 16px; border-radius: 8px; }
+.callout-up::before { content: ""; position: absolute; left: 22px; top: -12px; border: 7px solid transparent; border-bottom: 12px solid var(--hot); border-top: 0; }
+
+/* 凡例の色見本。色は style="background:…" で図に合わせる */
+.sw { display: inline-block; width: 14px; height: 14px; margin-right: 6px; vertical-align: -1px; border: 2px solid var(--ink); }
+
+/* 扉で「A → B？」の問いを2つの箱で示す（黒地用） */
+.qpair { display: grid; grid-template-columns: 1fr 40px 1fr; align-items: stretch; width: 660px; margin-top: 26px; }
+.qpair .c { border: 2px solid var(--bone); padding: 10px 14px; font-size: 19px; line-height: 1.45; }
+.qpair .c b { display: block; font-family: var(--font-mono); font-weight: 800; font-size: 15px; letter-spacing: .06em; color: var(--grey); margin-bottom: 4px; }
+.qpair .c.q { border-color: var(--hot); }
+.qpair .c.q b { color: var(--hot); }
+.qpair .a { display: flex; align-items: center; justify-content: center; color: var(--hot); font-family: var(--font-head); font-size: 28px; }
+
+/* 一覧の表（リンクの多い表を詰めて載せる）。_class に list を足す */
+section.list table { font-size: 18px; }
+section.list table td, section.list table th { padding-top: 5px; padding-bottom: 5px; }
+section.list table td:first-child, section.list table td:last-child { white-space: nowrap; }
+section.list h2 { margin-bottom: 10px; }

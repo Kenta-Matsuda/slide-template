@@ -282,6 +282,68 @@ theme: talk2026
 
 ---
 
+<!-- _class: t3 dense -->
+
+<div class="num">03</div>
+
+## 画面の説明は、キャプチャに枠と吹き出しを付けて1枚で見せる
+
+<img class="frame" src="assets/web/sample.png">
+
+<!--
+【ノート】画面は npm run shots で撮る（設定は shots.config.cjs）。小さいキャプチャを何枚も並べず、1枚を大きく載せる。
+-->
+
+---
+
+<!-- _class: t3 dense -->
+
+<div class="num">03</div>
+
+## 構成図は AWS の公式アイコンで HTML から書き出す
+
+<img class="wide" src="assets/diagrams/sample-arch.png">
+
+<div class="gloss"><b>作り方</b>：assets/diagrams/sample-arch.html を書き換えて npm run diagrams。アイコンは npm run icons -- AmazonBedrock で取る</div>
+
+---
+
+<!-- _class: t3 dense list -->
+
+<div class="num">03</div>
+
+## 一覧の表と、あとで扱う項目を指す吹き出し
+
+<p class="navpills">比べ方：<span class="pill hot">① 同じものを作る</span><span class="pill">② 要素を応用する</span></p>
+
+| # | タイトル | 種類 | Lv |
+|---|---|---|---|
+| 1 | <a href="https://marp.app/">一覧の1件目（押すとリンク先が開く）</a> | ブログ | L200 |
+| 2 | <a href="https://marp.app/">一覧の2件目</a> | GitHub | L300 |
+| <span class="hot">3</span> | <a href="https://marp.app/">あとで詳しく扱う項目</a> | ブログ | L300 |
+
+<div class="callout-up">#3 は、このあと TRACK 04 で詳しく紹介します</div>
+
+<p class="note"><span class="sw" style="background:var(--ink)"></span>凡例の色見本（.sw）は図の色に合わせる</p>
+
+---
+
+<!-- _class: t3 dark eye -->
+
+<div class="num">03</div>
+
+### Question Pair
+
+<div class="big">米国の事例は<br><span class="o">日本でも使える？</span></div>
+
+<div class="qpair">
+<div class="c"><b>米国</b>事例で何をしているか</div>
+<div class="a">→</div>
+<div class="c q"><b>日本では？</b>同じことができるか</div>
+</div>
+
+---
+
 <!-- _class: cover -->
 <!-- _header: '' -->
 <!-- _paginate: false -->
