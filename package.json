@@ -9,11 +9,15 @@
     "watch": "marp slides.md --no-stdin --theme theme.css --html --allow-local-files --browser chrome --browser-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\" --watch -o slides.html",
     "diagrams": "node tools/render-diagrams.cjs \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
     "shots": "node tools/shoot.cjs \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
-    "icons": "node tools/icons.cjs"
+    "icons": "node tools/icons.cjs",
+    "check": "node tools/check.cjs"
   },
   "devDependencies": {
     "@marp-team/marp-cli": "^4.5.1",
     "puppeteer-core": "^24.43.1",
     "aws-icons": "^3.3.0"
+  },
+  "slideTemplate": {
+    "repo": "Kenta-Matsuda/slide-template"
   }
 }

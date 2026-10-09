@@ -33,13 +33,13 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 ### Tracklist
 
 <div class="tracks">
-<div class="row main"><span class="n">01</span><span>メインのトラック（大きい字）</span></div>
-<div class="row main"><span class="n">02</span><span>メインのトラック</span></div>
-<div class="row"><span class="n">03</span><span>サブのトラック（小さい字）</span></div>
+<div class="row main"><span class="n">01</span><span>トラックの扉は問いかけで始める？</span></div>
+<div class="row main"><span class="n">02</span><span>AとBどっちが速い？</span></div>
+<div class="row"><span class="n">03</span><span>米国の事例は日本でも使える？</span></div>
 </div>
 
 <!--
-【ノート】目次。持ち時間の配分はここのノートに書いておく。
+【ノート】目次。持ち時間の配分はここのノートに書いておく。各トラックの扉の問いは、ここの行と同じ文にする（npm run check で確かめる）。
 -->
 
 ---
