@@ -1,5 +1,6 @@
 node_modules/
 .claude/settings.local.json
+.claude/.last-check
 
 # 書き出し物（必要ならデッキごとにコミットする）
 slides.html

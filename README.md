@@ -21,12 +21,27 @@ Marp で発表資料（PPTX）を作るためのテンプレートです。テ�
    npm run build    # slides.pptx と slides.html を書き出し、PPTX のリンクを押せるようにする
    npm run images   # preview/ に各スライドの PNG を書き出す（見た目の確認用）
    npm run watch    # 編集しながら slides.html を更新し続ける
+   npm run check    # slides.md を教訓由来のルールで確かめる（扉と目次の一致、言い回し、ノートの秒数）
    npm run diagrams # assets/diagrams/*.html の図を PNG に書き出す
    npm run shots    # shots.config.cjs に書いた画面を撮り、枠と吹き出しを付けて assets/web/ に書き出す
    npm run icons -- AmazonBedrock AWSLambda   # AWS の公式アイコンを assets/icons/ にコピーする（--find で名前を探す）
    ```
 
 Claude Code で作るときは `CLAUDE.md` に作り方のルールがあります。
+
+## 自己進化の仕組み
+
+Claude Code でデッキを作るたびに、テンプレートが賢くなるようにしています。
+
+| 段階 | 仕組み | ファイル |
+|---|---|---|
+| 読む | `CLAUDE.md` が `LESSONS.md`（過去の指摘と教訓）を読み込む | `LESSONS.md` |
+| 気づく | 発表者の発言が指摘らしいとき、記録を促す一言をエージェントに渡す | `.claude/settings.json`（UserPromptSubmit）・`tools/hooks/feedback-reminder.cjs` |
+| 記録する | `/lesson` で指摘を教訓として `LESSONS.md` に足す | `.claude/skills/lesson/SKILL.md` |
+| 確かめる | `npm run check` で教訓のうち機械で確かめられるものを検査する。エージェントが作業を終えるときに自動で走り、error があれば差し戻す | `tools/check.cjs`・`rules/check-rules.json`・`tools/hooks/check-on-stop.cjs`（Stop） |
+| 持ち帰る | `/retro` で教訓を整理してルール・部品・ツールに反映し、このテンプレートに PR を出す | `.claude/skills/retro/SKILL.md`・`package.json` の `slideTemplate.repo` |
+
+同じ指摘が2回出たら `CLAUDE.md` のルールに格上げし、正規表現で見つけられるものは `rules/check-rules.json` にも足します。フックを止めたいときは `.claude/settings.local.json` で上書きしてください。
 
 ## ファイル
 
@@ -43,6 +58,8 @@ Claude Code で作るときは `CLAUDE.md` に作り方のルールがありま�
 | `shots.config.cjs` | `npm run shots` で撮る画面の設定（URL、撮る範囲、枠と吹き出しを付ける要素） |
 | `tools/render-diagrams.cjs` | 図の HTML の `#fig` を PNG（2倍）に書き出す。`body` に `data-transparent="1"` で背景を透明にする |
 | `tools/shoot.cjs` | Web 画面を撮り、番号つきの枠と吹き出しを付ける。吹き出しは右の余白に重ならないように並ぶ |
+| `tools/check.cjs` | `slides.md` を教訓由来のルールで確かめる。ルールは `rules/check-rules.json` |
+| `LESSONS.md` | 発表者から受けた指摘と、そこから得た教訓の記録 |
 | `tools/icons.cjs` | AWS の公式アイコンを探して `assets/icons/` にコピーする |
 
 Marp の PPTX は各スライドが画像になるため、そのままではリンクを押せません。`npm run build` の最後の `npm run links` がこれを補います。
