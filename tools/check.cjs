@@ -2,6 +2,7 @@
 // 使い方: node tools/check.cjs [slides.md]
 // 確かめること
 //   - 構造: 各トラックの最初の扉（dark eye）の問いが目次（Tracklist）の行と同じか / 各スライドに発表者ノートがあるか / ノートの秒数の合計
+//           表のあるスライドで、吹き出し（.callout-up）が表の行として入っているか
 //   - 言い回し: rules/check-rules.json の patterns（正規表現）
 // error が1件でもあれば終了コード 1 で終わる。warn は表示だけ
 const fs = require('fs');
@@ -44,6 +45,14 @@ for (const s of slides) {
     if (first && row && big) {
       const q = strip(big);
       if (!row.t.endsWith(q) && !row.t.includes(q)) add('error', s.no, 'DOOR', `扉の問い「${q}」が目次の行「${row.t}」と違う。同じ文にする`);
+    }
+  }
+
+  // 表の中の項目を指す吹き出しは、指す行の直下に表の1行として入れる（L016）
+  const lines = s.text.split('\n');
+  if (lines.some((l) => /^\|[-| :]+\|$/.test(l.trim()))) {
+    for (const l of lines) {
+      if (/class="callout-up"/.test(l) && !l.trim().startsWith('|')) add('warn', s.no, 'CALLOUT', '吹き出しが表の外にある。指す行の直下に表の1行（| | <div class="callout-up">…</div> | |）として入れる');
     }
   }
 

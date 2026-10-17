@@ -10,7 +10,8 @@
     "diagrams": "node tools/render-diagrams.cjs \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
     "shots": "node tools/shoot.cjs \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
     "icons": "node tools/icons.cjs",
-    "check": "node tools/check.cjs"
+    "check": "node tools/check.cjs",
+    "overflow": "npm run preview && node tools/check-overflow.cjs slides.html \"C:/Program Files/Google/Chrome/Application/chrome.exe\""
   },
   "devDependencies": {
     "@marp-team/marp-cli": "^4.5.1",

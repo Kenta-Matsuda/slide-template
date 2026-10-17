@@ -812,3 +812,20 @@ section.list table { font-size: 18px; }
 section.list table td, section.list table th { padding-top: 5px; padding-bottom: 5px; }
 section.list table td:first-child, section.list table td:last-child { white-space: nowrap; }
 section.list h2 { margin-bottom: 10px; }
+
+/* 一覧の表で、英語のタイトルの日本語訳の下に元のタイトルを小さく添える：<a>日本語訳<span class="en">English title</span></a> */
+section.list .en { display: block; font-size: 15px; line-height: 1.3; color: var(--grey); font-weight: 400; margin-top: 1px; }
+
+/* 表の中の吹き出し。指したい行の直下に1行として入れる（| | <div class="callout-up">…</div> | | |）。
+   表の下に置くと、行の数や改ページが変わったときに別の行を指してしまう */
+section tr:has(.callout-up) td { border-bottom: none !important; padding: 0 !important; }
+section tr:has(.callout-up) .callout-up { margin: 2px 0 8px 0; }
+section tr:has(.callout-up) + tr td { border-top: 1.5px solid var(--line) !important; }
+
+/* 付録（読み物）の表。発表では使わず、あとで読まれる前提で文章を詰めて載せる。_class に appendix を足す */
+section.appendix table { font-size: 18px; line-height: 1.5; table-layout: fixed; width: 100%; }
+section.appendix th:first-child { width: 180px; }
+section.appendix td:first-child { font-weight: 700; white-space: normal; }
+section.appendix td, section.appendix th { padding: 6px 12px 6px 0; }
+section.appendix .lead { font-size: 19px; font-weight: 400; margin: -4px 0 10px; }
+section.appendix .gloss { margin-top: 8px; }
