@@ -33,13 +33,13 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 ### Tracklist
 
 <div class="tracks">
-<div class="row main"><span class="n">01</span><span>メインのトラック（大きい字）</span></div>
-<div class="row main"><span class="n">02</span><span>メインのトラック</span></div>
-<div class="row"><span class="n">03</span><span>サブのトラック（小さい字）</span></div>
+<div class="row main"><span class="n">01</span><span>トラックの扉は問いかけで始める？</span></div>
+<div class="row main"><span class="n">02</span><span>AとBどっちが速い？</span></div>
+<div class="row"><span class="n">03</span><span>米国の事例は日本でも使える？</span></div>
 </div>
 
 <!--
-【ノート】目次。持ち時間の配分はここのノートに書いておく。
+【ノート】目次。持ち時間の配分はここのノートに書いておく。各トラックの扉の問いは、ここの行と同じ文にする（npm run check で確かめる）。
 -->
 
 ---
@@ -319,10 +319,9 @@ theme: talk2026
 | # | タイトル | 種類 | Lv |
 |---|---|---|---|
 | 1 | <a href="https://marp.app/">一覧の1件目（押すとリンク先が開く）</a> | ブログ | L200 |
-| 2 | <a href="https://marp.app/">一覧の2件目</a> | GitHub | L300 |
+| 2 | <a href="https://marp.app/">英語の記事は日本語訳を主にする<span class="en">Write the original English title small (.en)</span></a> | GitHub | L300 |
 | <span class="hot">3</span> | <a href="https://marp.app/">あとで詳しく扱う項目</a> | ブログ | L300 |
-
-<div class="callout-up">#3 は、このあと TRACK 04 で詳しく紹介します</div>
+| | <div class="callout-up">#3 は、このあと TRACK 04 で詳しく紹介します（吹き出しは指す行の直下に1行として入れる）</div> | | |
 
 <p class="note"><span class="sw" style="background:var(--ink)"></span>凡例の色見本（.sw）は図の色に合わせる</p>
 
@@ -353,3 +352,28 @@ theme: talk2026
 # 締めの<br><span class="o">問いかけ</span>も<br>3行で<span class="dot">?</span>
 
 <div class="meta"><span>GitHub <b>your-id</b></span><span>この資料は <b>CLAUDE CODE</b> が作りました</span></div>
+
+<!--
+【ノート】締め。
+-->
+
+---
+
+<!-- _class: t3 dense appendix -->
+
+<div class="num">03</div>
+
+## 付録：詳しく調べた内容は締めのあとに回す
+
+<p class="lead">付録は、発表では使わず、質疑やあとで読まれるときの手元資料です。初めて読む人でも順に理解できるように、主語と述語を省かず、です・ます調で書きます。</p>
+
+| 比べること | A の場合 | B の場合 |
+|---|---|---|
+| 何で決まっているか | A では、法律とその規則で、書く項目まで決まっています。 | B では、指針で方向だけが示され、書く項目は各組織が決めます。 |
+| 誰が確かめるか | A では、外部の機関が確かめます。 | B では、組織の中で確かめます。 |
+
+<div class="gloss"><b>注</b>　法令などの解釈は発表者が調べて整理したものです。実際に使うときは専門家に確かめてください。</div>
+
+<!--
+【ノート】付録。発表では使わない。質疑で聞かれたときの手元資料。
+-->

@@ -21,12 +21,28 @@ Marp で発表資料（PPTX）を作るためのテンプレートです。テ�
    npm run build    # slides.pptx と slides.html を書き出し、PPTX のリンクを押せるようにする
    npm run images   # preview/ に各スライドの PNG を書き出す（見た目の確認用）
    npm run watch    # 編集しながら slides.html を更新し続ける
+   npm run check    # slides.md を教訓由来のルールで確かめる（扉と目次の一致、言い回し、ノートの秒数、吹き出しの位置）
+   npm run overflow # slides.html を書き出し、スライドからはみ出した要素・下の余白に食い込んだ要素を測って書き出す
    npm run diagrams # assets/diagrams/*.html の図を PNG に書き出す
    npm run shots    # shots.config.cjs に書いた画面を撮り、枠と吹き出しを付けて assets/web/ に書き出す
    npm run icons -- AmazonBedrock AWSLambda   # AWS の公式アイコンを assets/icons/ にコピーする（--find で名前を探す）
    ```
 
 Claude Code で作るときは `CLAUDE.md` に作り方のルールがあります。
+
+## 自己進化の仕組み
+
+Claude Code でデッキを作るたびに、テンプレートが賢くなるようにしています。
+
+| 段階 | 仕組み | ファイル |
+|---|---|---|
+| 読む | `CLAUDE.md` が `LESSONS.md`（過去の指摘と教訓）を読み込む | `LESSONS.md` |
+| 気づく | 発表者の発言が指摘らしいとき、記録を促す一言をエージェントに渡す | `.claude/settings.json`（UserPromptSubmit）・`tools/hooks/feedback-reminder.cjs` |
+| 記録する | `/lesson` で指摘を教訓として `LESSONS.md` に足す | `.claude/skills/lesson/SKILL.md` |
+| 確かめる | `npm run check` で教訓のうち機械で確かめられるものを検査する。エージェントが作業を終えるときに自動で走り、error があれば差し戻す | `tools/check.cjs`・`rules/check-rules.json`・`tools/hooks/check-on-stop.cjs`（Stop） |
+| 持ち帰る | `/retro` で教訓を整理してルール・部品・ツールに反映し、このテンプレートに PR を出す | `.claude/skills/retro/SKILL.md`・`package.json` の `slideTemplate.repo` |
+
+同じ指摘が2回出たら `CLAUDE.md` のルールに格上げし、正規表現で見つけられるものは `rules/check-rules.json` にも足します。フックを止めたいときは `.claude/settings.local.json` で上書きしてください。
 
 ## ファイル
 
@@ -43,6 +59,9 @@ Claude Code で作るときは `CLAUDE.md` に作り方のルールがありま�
 | `shots.config.cjs` | `npm run shots` で撮る画面の設定（URL、撮る範囲、枠と吹き出しを付ける要素） |
 | `tools/render-diagrams.cjs` | 図の HTML の `#fig` を PNG（2倍）に書き出す。`body` に `data-transparent="1"` で背景を透明にする |
 | `tools/shoot.cjs` | Web 画面を撮り、番号つきの枠と吹き出しを付ける。吹き出しは右の余白に重ならないように並ぶ |
+| `tools/check-overflow.cjs` | `slides.html` を開き、スライドの外に出た要素（error）と下の余白に食い込んだ要素（warn）を書き出す。右下の番号（`.num`）とヘッダーは除く |
+| `tools/check.cjs` | `slides.md` を教訓由来のルールで確かめる。ルールは `rules/check-rules.json` |
+| `LESSONS.md` | 発表者から受けた指摘と、そこから得た教訓の記録 |
 | `tools/icons.cjs` | AWS の公式アイコンを探して `assets/icons/` にコピーする |
 
 Marp の PPTX は各スライドが画像になるため、そのままではリンクを押せません。`npm run build` の最後の `npm run links` がこれを補います。
@@ -113,10 +132,11 @@ Marp CLI は Chrome でスライドを描画します。図の書き出し（`di
 | `.fill`（`.fill-lg`） | 未記入の箇所（点線枠） |
 | `img.frame` / `img.wide` | キャプチャ（枠付き）・図を横いっぱいに置く |
 | `.navpills` | 見出しの下の道しるべ。並列の選択肢を `.pill` で並べ、いま話している側を `.hot` にする |
-| `.callout-up` | 上の行を指す吹き出し。一覧の中で、あとで扱う項目を示す |
+| `.callout-up` | 上の行を指す吹き出し。一覧の中で、あとで扱う項目を示す。表の中では、指す行の直下に表の1行（`\| \| <div class="callout-up">…</div> \| \| \|`）として入れる |
 | `.sw` | 凡例の色見本。色は `style="background:…"` で図に合わせる |
 | `.qpair` > `.c`（`.q`）/ `.a` | 扉で「A → B？」の問いを2つの箱で示す（黒地用） |
-| `list`（`_class`） | リンクの多い一覧の表を詰めて載せる |
+| `list`（`_class`） | リンクの多い一覧の表を詰めて載せる。英語のタイトルは `<a>日本語訳<span class="en">English title</span></a>` で元の題を小さく添える |
+| `appendix`（`_class`） | 付録（読み物）の表。18px・固定幅の列で、1列目を折り返す。冒頭の `.lead` は細字。締め（END）のあとに置く |
 
 ## 発表者ノート
 
