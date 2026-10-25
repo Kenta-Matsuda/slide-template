@@ -87,7 +87,7 @@ Marp CLI は Chrome でスライドを描画します。図の書き出し（`di
   </style>
   ```
 
-- **ヘッダーの文言**：トラック外のページの「LIVE」と右上の「MADE WITH CLAUDE CODE」は、`theme.css` の `--header-label` / `--header-sub` で変える。
+- **ヘッダーの文言**：トラック外のページの「LIVE」と右上の「MADE WITH CLAUDE CODE」は、`theme.css` の `--header-label` / `--header-sub` で変える。デッキだけで消したいときは、`slides.md` の先頭に `style: |` と `  section header::after { content: none !important; }` を足す。
 - **色とフォント**：`theme.css` の `:root`（`--ink` 黒、`--bone` 生成り、`--grey`、`--line`、`--hot` 差し色）。
 
 ## スライドの種類（`_class`）

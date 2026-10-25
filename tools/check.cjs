@@ -24,6 +24,7 @@ const toc = slides.find((s) => /### Tracklist/.test(s.text));
 const tocRows = toc ? [...toc.text.matchAll(/<span class="n">(\d+)<\/span><span>([\s\S]*?)<\/span><\/div>/g)].map((m) => ({ n: m[1], t: strip(m[2]) })) : [];
 
 let seconds = 0;
+const perTrack = new Map(); // トラックの番号（.num）ごとの秒数。目次のノートの配分と照らす
 const seenDoor = new Set(); // トラックの最初の扉だけを目次と比べる（途中の扉は比べない）
 for (const s of slides) {
   const cls = (s.text.match(/<!-- _class: ([^-]*?) -->/) || [])[1] || '';
@@ -33,7 +34,11 @@ for (const s of slides) {
   // ノート
   if (!/【ノート】/.test(note)) add('warn', s.no, 'NOTE', '発表者ノート（【ノート】）がない');
   const sec = note.match(/【ノート】\s*(\d+)\s*秒/);
-  if (sec) seconds += Number(sec[1]);
+  if (sec) {
+    seconds += Number(sec[1]);
+    const tr = (s.text.match(/<div class="num">([^<]+)<\/div>/) || [])[1] || 'その他';
+    perTrack.set(tr, (perTrack.get(tr) || 0) + Number(sec[1]));
+  }
 
   // 扉の問いと目次
   if (/\bdark\b/.test(cls) && /\beye\b/.test(cls) && tocRows.length) {
@@ -74,6 +79,7 @@ if (seconds && rules.targetSeconds) {
   const diff = seconds - rules.targetSeconds;
   const mmss = (t) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
   console.log(`ノートの秒数の合計 ${mmss(seconds)}（目標 ${mmss(rules.targetSeconds)}）`);
+  console.log('トラックごと：' + [...perTrack].map(([k, v]) => `${k} ${mmss(v)}`).join('、'));
   if (Math.abs(diff) > 30) add('warn', '-', 'TIME', `持ち時間から ${diff > 0 ? '+' : ''}${diff} 秒ずれている`);
 }
 for (const o of out) console.log(`${o.level === 'error' ? 'ERROR' : 'warn '} slide ${o.no} [${o.id}] ${o.msg}`);

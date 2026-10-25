@@ -1,16 +1,26 @@
 """slides.md を、スライド 1 枚 ＋ その枚の発表者ノートを並べた記事（Qiita CLI の形式）に書き出す。
 
-使い方: python -X utf8 tools/to-article.py [記事のファイル名]   （既定: article）
+使い方: python -X utf8 tools/to-article.py [記事のファイル名] [--image-base URL]   （既定: article）
   - 先に npm run images で preview/ に PNG を書き出しておく。
   - public/<名前>.md と public/images/slide.NNN.png を作る。ignorePublish: true なので、Qiita CLI で誤って投稿されない。
   - ノートの「【ノート】N秒」と、括弧だけの行（演出の指示・付録の断り書き）は落とす。
   - 各枚のリンクは、その枚の下に「参考」として並べる。リンクを持つ表は行ごとの箇条書きにする。
-  - 画像は Qiita CLI ではアップロードできない。https://qiita.com/settings/image_upload で上げて、パスを置き換える。
+  - 画像は Qiita CLI ではアップロードできない。公開して投稿するときは、どちらかにする。
+    a) public/images/ の PNG を GitHub Pages のリポジトリ（登壇資料の置き場など）に push し、配信されたのを確かめてから
+       --image-base https://<user>.github.io/<repo>/<path> を付けて書き出し直す（画像の URL がそこに向く）
+    b) https://qiita.com/settings/image_upload で上げて、パスを手で置き換える
+  - 投稿は、ignorePublish を false にしてから npx qiita publish <名前>。
 """
 import html, os, re, shutil, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-name = sys.argv[1] if len(sys.argv) > 1 else 'article'
+args = sys.argv[1:]
+base = None
+if '--image-base' in args:
+    i = args.index('--image-base')
+    base = args[i + 1].rstrip('/')
+    del args[i:i + 2]
+name = args[0] if args else 'article'
 src = open(os.path.join(ROOT, 'slides.md'), encoding='utf-8').read().replace('\r\n', '\n')
 parts = src.split('\n---\n')[1:]  # 先頭は Marp の設定
 os.makedirs(os.path.join(ROOT, 'public', 'images'), exist_ok=True)
@@ -38,7 +48,7 @@ for i, p in enumerate(parts):
         if big:
             label = f'TRACK {num.group(1)} ' if num and num.group(1).isdigit() else ('付録 ' if 'appendix' in p else '')
             out.append(f'## {label}{text(big.group(1))}\n')
-    out.append(f'![スライド {n}](./images/{img})\n')
+    out.append(f'![スライド {n}]({base or './images'}/{img})\n')
     note = re.search(r'【ノート】\d+秒\n(.*?)\n-->', p, re.S)
     if note:
         lines = [l.strip() for l in note.group(1).split('\n')]
