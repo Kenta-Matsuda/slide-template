@@ -36,7 +36,7 @@ Claude Code でデッキを作るたびに、テンプレートが賢くなる�
 
 | 段階 | 仕組み | ファイル |
 |---|---|---|
-| 読む | `CLAUDE.md` が `LESSONS.md`（過去の指摘と教訓）を読み込む | `LESSONS.md` |
+| 読む | `CLAUDE.md` が `LESSONS.md`（過去の指摘と教訓）を読み込み、作業の前にスキル `slide-craft`（教訓を原則・進め方・点検リストに体系化したもの）を読む | `LESSONS.md`・`.claude/skills/slide-craft/SKILL.md` |
 | 気づく | 発表者の発言が指摘らしいとき、記録を促す一言をエージェントに渡す | `.claude/settings.json`（UserPromptSubmit）・`tools/hooks/feedback-reminder.cjs` |
 | 記録する | `/lesson` で指摘を教訓として `LESSONS.md` に足す | `.claude/skills/lesson/SKILL.md` |
 | 確かめる | `npm run check` で教訓のうち機械で確かめられるものを検査する。エージェントが作業を終えるときに自動で走り、error があれば差し戻す | `tools/check.cjs`・`rules/check-rules.json`・`tools/hooks/check-on-stop.cjs`（Stop） |
@@ -63,6 +63,8 @@ Claude Code でデッキを作るたびに、テンプレートが賢くなる�
 | `tools/check.cjs` | `slides.md` を教訓由来のルールで確かめる。ルールは `rules/check-rules.json` |
 | `LESSONS.md` | 発表者から受けた指摘と、そこから得た教訓の記録 |
 | `tools/icons.cjs` | AWS の公式アイコンを探して `assets/icons/` にコピーする |
+| `tools/to-article.py` | `npm run article -- 名前`：スライド 1 枚 ＋ その枚のノートを並べた記事を `public/名前.md` に書き出す（Qiita CLI の形式。`ignorePublish: true` で投稿しない）。画像は `public/images/` にコピーされるので、Qiita の画像アップロードで上げて差し替える |
+| `.claude/skills/slide-craft/SKILL.md` | スライドづくりのベストプラクティス。`LESSONS.md` の教訓を、題材によらない原則・進め方・点検リストに体系化したもの |
 
 Marp の PPTX は各スライドが画像になるため、そのままではリンクを押せません。`npm run build` の最後の `npm run links` がこれを補います。
 
@@ -85,7 +87,7 @@ Marp CLI は Chrome でスライドを描画します。図の書き出し（`di
   </style>
   ```
 
-- **ヘッダーの文言**：トラック外のページの「LIVE」と右上の「MADE WITH CLAUDE CODE」は、`theme.css` の `--header-label` / `--header-sub` で変える。
+- **ヘッダーの文言**：トラック外のページの「LIVE」と右上の「MADE WITH CLAUDE CODE」は、`theme.css` の `--header-label` / `--header-sub` で変える。デッキだけで消したいときは、`slides.md` の先頭に `style: |` と `  section header::after { content: none !important; }` を足す。
 - **色とフォント**：`theme.css` の `:root`（`--ink` 黒、`--bone` 生成り、`--grey`、`--line`、`--hot` 差し色）。
 
 ## スライドの種類（`_class`）
@@ -95,7 +97,7 @@ Marp CLI は Chrome でスライドを描画します。図の書き出し（`di
 | `cover` | 表紙・締め。`_header: ''` と `_paginate: false` を一緒に付ける。タイトルは3行がおさまりがいい |
 | `tN dark eye` | トラックの扉（黒地）。`### 英語の小見出し` ＋ `.big` の問いかけ |
 | `tN` | 結論のスライド。`.big` ＋ `.rules` など |
-| `tN dense` | 詳細のスライド。本文が一段小さくなる。`## 見出し` は1文で言い切る |
+| `tN dense` | 詳細のスライド。本文が一段小さくなる。`## 見出し` は短い名詞句にし、言いたいことは直下の `.lead` で言い切る |
 | `tN dense why` | 観点ごとに行をまとめた表（観点の変わり目だけ線を引く） |
 | `dark` | 黒地。他と組み合わせる |
 
@@ -106,7 +108,7 @@ Marp CLI は Chrome でスライドを描画します。図の書き出し（`di
 | 部品 | 用途 |
 |---|---|
 | `.big` / `.mid` | 大きな文。中で `.o`（白抜き）・`.hot`（差し色）が使える |
-| `.lead` | 見出し直下の要約。`<em>` が差し色 |
+| `.lead` | 見出し直下で、その枚の言いたいことを1文で言い切る。`<em>` が差し色 |
 | `.cols`（`.cols-73` / `.cols-37`） | 2列 |
 | `.rules` > `.r`（`.hl`） | 見出し＋説明の行。結論のまとめに |
 | `.stats` > `.s` > `.v` / `.k` | 数字タイル（4つ） |
@@ -131,6 +133,8 @@ Marp CLI は Chrome でスライドを描画します。図の書き出し（`di
 | `.media` | 動画などの置き場所 |
 | `.fill`（`.fill-lg`） | 未記入の箇所（点線枠） |
 | `img.frame` / `img.wide` | キャプチャ（枠付き）・図を横いっぱいに置く |
+| `.topic` | 見出しの左上に、その枚が大枠何の話か（`[サイト概要]` など）を小さく示す。`<div class="num">` の直後に `<p class="topic">サイト概要</p>` と置く。扉・表紙・目次以外の全部の枚に付ける |
+| `.live` > `iframe` | 実際の Web サイトを埋め込み、HTML 版から操作できるようにする。`style="height:…;background-image:url(キャプチャ)"` で高さと、読み込めないとき（PPTX）のキャプチャを指定する |
 | `.navpills` | 見出しの下の道しるべ。並列の選択肢を `.pill` で並べ、いま話している側を `.hot` にする |
 | `.callout-up` | 上の行を指す吹き出し。一覧の中で、あとで扱う項目を示す。表の中では、指す行の直下に表の1行（`\| \| <div class="callout-up">…</div> \| \| \|`）として入れる |
 | `.sw` | 凡例の色見本。色は `style="background:…"` で図に合わせる |

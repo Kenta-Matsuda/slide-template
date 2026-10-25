@@ -5,12 +5,13 @@
     "build:pptx": "marp slides.md --no-stdin --theme theme.css --html --pptx --allow-local-files --browser chrome --browser-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\" -o slides.pptx",
     "links": "node tools/measure-links.cjs slides.html links.json \"C:/Program Files/Google/Chrome/Application/chrome.exe\" && python tools/add-pptx-links.py slides.pptx links.json",
     "preview": "marp slides.md --no-stdin --theme theme.css --html --allow-local-files --browser chrome --browser-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\" -o slides.html",
-    "images": "marp slides.md --no-stdin --theme theme.css --html --allow-local-files --browser chrome --browser-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\" --images png -o preview/slide.png",
+    "images": "node -e \"require('fs').rmSync('preview',{recursive:true,force:true})\" && marp slides.md --no-stdin --theme theme.css --html --allow-local-files --browser chrome --browser-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\" --images png -o preview/slide.png",
     "watch": "marp slides.md --no-stdin --theme theme.css --html --allow-local-files --browser chrome --browser-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\" --watch -o slides.html",
     "diagrams": "node tools/render-diagrams.cjs \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
     "shots": "node tools/shoot.cjs \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
     "icons": "node tools/icons.cjs",
     "check": "node tools/check.cjs",
+    "article": "python -X utf8 tools/to-article.py",
     "overflow": "npm run preview && node tools/check-overflow.cjs slides.html \"C:/Program Files/Google/Chrome/Application/chrome.exe\""
   },
   "devDependencies": {

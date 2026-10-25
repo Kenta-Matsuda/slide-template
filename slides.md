@@ -67,6 +67,8 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 
 <div class="num">01</div>
 
+<p class="topic">部品の見本</p>
+
 <div class="big">結論を大きく言う。<br><span class="hot">差し色で強調する。</span></div>
 
 <div class="rules">
@@ -83,9 +85,11 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 
 <div class="num">01</div>
 
-## 詳細スライドの見出しは1文で言い切る
+<p class="topic">部品の見本</p>
 
-<p class="lead">見出し直下の要約（.lead）。<em>em は差し色</em>になる。</p>
+## 詳細スライドの見出し
+
+<p class="lead">見出しは短い名詞句にし、言いたいことは直下の .lead で言い切る。<em>em は差し色</em>になる。</p>
 
 <div class="cols">
 <div>
@@ -118,6 +122,8 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 <!-- _class: t1 dense -->
 
 <div class="num">01</div>
+
+<p class="topic">部品の見本</p>
 
 ## 数字タイルと番号つきの理由
 
@@ -158,6 +164,8 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 
 <div class="num">02</div>
 
+<p class="topic">部品の見本</p>
+
 ## 横棒グラフと BEFORE / AFTER
 
 <div class="cols" style="grid-template-columns: 1fr 1.25fr; align-items:center">
@@ -190,6 +198,8 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 
 <div class="num">02</div>
 
+<p class="topic">部品の見本</p>
+
 ## 表は Markdown のまま書ける
 
 | 項目 | 何が困るか | どうしたか |
@@ -206,6 +216,8 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 <!-- _class: t2 dense -->
 
 <div class="num">02</div>
+
+<p class="topic">部品の見本</p>
 
 ## 手順・押した一言の流れ
 
@@ -226,6 +238,8 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 
 <div class="num">03</div>
 
+<p class="topic">部品の見本</p>
+
 ## チャットのやり取り
 
 <div class="chat">
@@ -240,6 +254,8 @@ header: '<div class="prog"><i></i><i></i><i></i></div>'
 <!-- _class: t3 dense -->
 
 <div class="num">03</div>
+
+<p class="topic">部品の見本</p>
 
 ## コードと番号つきの説明
 
@@ -267,6 +283,8 @@ theme: talk2026
 
 <div class="num">03</div>
 
+<p class="topic">部品の見本</p>
+
 ## 未記入の箇所は点線枠で残す
 
 <div class="cols">
@@ -286,6 +304,8 @@ theme: talk2026
 
 <div class="num">03</div>
 
+<p class="topic">部品の見本</p>
+
 ## 画面の説明は、キャプチャに枠と吹き出しを付けて1枚で見せる
 
 <img class="frame" src="assets/web/sample.png">
@@ -300,6 +320,8 @@ theme: talk2026
 
 <div class="num">03</div>
 
+<p class="topic">部品の見本</p>
+
 ## 構成図は AWS の公式アイコンで HTML から書き出す
 
 <img class="wide" src="assets/diagrams/sample-arch.png">
@@ -311,6 +333,8 @@ theme: talk2026
 <!-- _class: t3 dense list -->
 
 <div class="num">03</div>
+
+<p class="topic">部品の見本</p>
 
 ## 一覧の表と、あとで扱う項目を指す吹き出し
 
@@ -362,6 +386,8 @@ theme: talk2026
 <!-- _class: t3 dense appendix -->
 
 <div class="num">03</div>
+
+<p class="topic">部品の見本</p>
 
 ## 付録：詳しく調べた内容は締めのあとに回す
 
