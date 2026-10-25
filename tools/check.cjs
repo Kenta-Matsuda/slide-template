@@ -48,6 +48,10 @@ for (const s of slides) {
     }
   }
 
+  // 本文の枚には、大枠何の話かを示す .topic を付ける（L023）。表紙・目次・扉は除く
+  const isBody = /<div class="num">/.test(s.text) && !/\beye\b/.test(cls) && !/\bcover\b/.test(cls);
+  if (isBody && !/class="topic"/.test(s.text)) add('warn', s.no, 'TOPIC', '見出しの左上に、大枠何の話か（<p class="topic">サイト概要</p> など）がない');
+
   // 表の中の項目を指す吹き出しは、指す行の直下に表の1行として入れる（L016）
   const lines = s.text.split('\n');
   if (lines.some((l) => /^\|[-| :]+\|$/.test(l.trim()))) {

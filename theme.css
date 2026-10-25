@@ -829,3 +829,16 @@ section.appendix td:first-child { font-weight: 700; white-space: normal; }
 section.appendix td, section.appendix th { padding: 6px 12px 6px 0; }
 section.appendix .lead { font-size: 19px; font-weight: 400; margin: -4px 0 10px; }
 section.appendix .gloss { margin-top: 8px; }
+
+/* 見出しの左上に、その枚が大枠何の話か（サイト概要・コスト最適化など）を小さく示す。<div class="num"> の直後に置く */
+section > p.topic { position: absolute; top: 58px; left: 70px; margin: 0; font-size: 16px; font-weight: 800; letter-spacing: .06em; color: var(--hot); line-height: 1.2; }
+section .topic::before { content: "["; margin-right: 4px; }
+section .topic::after { content: "]"; margin-left: 4px; }
+
+/* 実際のサイトを iframe で埋め込み、HTML 版の資料から操作できるようにする。
+   iframe は 1/0.72 倍の大きさで作って 0.72 倍に縮め、PC 版の画面で見せる。読み込めないとき（PPTX など）は背景のキャプチャが見える */
+.live { position: relative; width: 100%; border: 3px solid var(--ink); overflow: clip; background: #fff center / contain no-repeat; }
+.live iframe { position: absolute; left: 0; top: 0; width: calc(100% / 0.72); height: calc(100% / 0.72); transform: scale(.72); transform-origin: 0 0; border: 0; }
+.live .tag { position: absolute; right: 0; top: 0; z-index: 2; font-family: var(--font-mono); font-weight: 800; font-size: 13px; letter-spacing: .08em; padding: 2px 8px; background: var(--hot); color: #fff; }
+/* iframe の中でフォーカスが動いても、スライドごとスクロールしてずれないようにする */
+section:has(.live) { overflow: clip; }

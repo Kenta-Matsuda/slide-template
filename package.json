@@ -11,6 +11,7 @@
     "shots": "node tools/shoot.cjs \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
     "icons": "node tools/icons.cjs",
     "check": "node tools/check.cjs",
+    "article": "python -X utf8 tools/to-article.py",
     "overflow": "npm run preview && node tools/check-overflow.cjs slides.html \"C:/Program Files/Google/Chrome/Application/chrome.exe\""
   },
   "devDependencies": {
